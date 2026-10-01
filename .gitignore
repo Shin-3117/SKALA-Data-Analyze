@@ -1,7 +1,12 @@
-/data/
+/data/*
+!/data/README.md
 # output folder is ignored except for HTML files
 /day1/output/*
 !/day1/output/*.html
+!/day1/output/early_features.csv
+!/day1/output/planned_b1_split.csv
+!/day1/output/feature_design.csv
+!/day1/output/model_candidates.csv
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,macos

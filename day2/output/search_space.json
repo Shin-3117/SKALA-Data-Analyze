@@ -1,0 +1,1910 @@
+[
+  {
+    "family": "Median",
+    "feature_set": "delta",
+    "params": {},
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C000"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C001"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C002"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C003"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C004"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C005"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C006"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C007"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C008"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C009"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C010"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta_qd",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C011"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta_qd",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C012"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta_qd",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C013"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta_qd",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C014"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta_qd",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C015"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta_qd",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C016"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta_qd",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C017"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta_qd",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C018"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta_qd",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C019"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "delta_qd",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C020"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C021"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C022"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C023"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C024"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C025"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C026"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C027"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C028"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C029"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C030"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C031"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C032"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C033"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C034"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C035"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C036"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C037"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C038"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C039"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C040"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C041"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C042"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C043"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C044"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C045"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C046"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C047"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C048"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C049"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C050"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C051"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C052"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C053"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C054"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C055"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C056"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C057"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C058"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C059"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C060"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core_category",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C061"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core_category",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C062"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core_category",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C063"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core_category",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C064"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core_category",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C065"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core_category",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C066"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core_category",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C067"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core_category",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C068"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core_category",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C069"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "core_category",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C070"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": false,
+    "corr_threshold": 1.01,
+    "candidate_id": "C071"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 0.01
+    },
+    "log_target": true,
+    "corr_threshold": 1.01,
+    "candidate_id": "C072"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": false,
+    "corr_threshold": 1.01,
+    "candidate_id": "C073"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 0.1
+    },
+    "log_target": true,
+    "corr_threshold": 1.01,
+    "candidate_id": "C074"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": false,
+    "corr_threshold": 1.01,
+    "candidate_id": "C075"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 1.0
+    },
+    "log_target": true,
+    "corr_threshold": 1.01,
+    "candidate_id": "C076"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": false,
+    "corr_threshold": 1.01,
+    "candidate_id": "C077"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 10.0
+    },
+    "log_target": true,
+    "corr_threshold": 1.01,
+    "candidate_id": "C078"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": false,
+    "corr_threshold": 1.01,
+    "candidate_id": "C079"
+  },
+  {
+    "family": "Ridge",
+    "feature_set": "duplicates",
+    "params": {
+      "alpha": 100.0
+    },
+    "log_target": true,
+    "corr_threshold": 1.01,
+    "candidate_id": "C080"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "core",
+    "params": {
+      "alpha": 0.01,
+      "l1_ratio": 0.2
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C081"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "core",
+    "params": {
+      "alpha": 0.01,
+      "l1_ratio": 0.2
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C082"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "core",
+    "params": {
+      "alpha": 0.01,
+      "l1_ratio": 0.8
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C083"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "core",
+    "params": {
+      "alpha": 0.01,
+      "l1_ratio": 0.8
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C084"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "core",
+    "params": {
+      "alpha": 0.1,
+      "l1_ratio": 0.2
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C085"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "core",
+    "params": {
+      "alpha": 0.1,
+      "l1_ratio": 0.2
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C086"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "core",
+    "params": {
+      "alpha": 0.1,
+      "l1_ratio": 0.8
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C087"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "core",
+    "params": {
+      "alpha": 0.1,
+      "l1_ratio": 0.8
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C088"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "core",
+    "params": {
+      "alpha": 1.0,
+      "l1_ratio": 0.2
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C089"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "core",
+    "params": {
+      "alpha": 1.0,
+      "l1_ratio": 0.2
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C090"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "core",
+    "params": {
+      "alpha": 1.0,
+      "l1_ratio": 0.8
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C091"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "core",
+    "params": {
+      "alpha": 1.0,
+      "l1_ratio": 0.8
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C092"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 0.01,
+      "l1_ratio": 0.2
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C093"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 0.01,
+      "l1_ratio": 0.2
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C094"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 0.01,
+      "l1_ratio": 0.8
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C095"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 0.01,
+      "l1_ratio": 0.8
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C096"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 0.1,
+      "l1_ratio": 0.2
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C097"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 0.1,
+      "l1_ratio": 0.2
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C098"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 0.1,
+      "l1_ratio": 0.8
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C099"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 0.1,
+      "l1_ratio": 0.8
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C100"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 1.0,
+      "l1_ratio": 0.2
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C101"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 1.0,
+      "l1_ratio": 0.2
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C102"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 1.0,
+      "l1_ratio": 0.8
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C103"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "policy",
+    "params": {
+      "alpha": 1.0,
+      "l1_ratio": 0.8
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C104"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 0.01,
+      "l1_ratio": 0.2
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C105"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 0.01,
+      "l1_ratio": 0.2
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C106"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 0.01,
+      "l1_ratio": 0.8
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C107"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 0.01,
+      "l1_ratio": 0.8
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C108"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 0.1,
+      "l1_ratio": 0.2
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C109"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 0.1,
+      "l1_ratio": 0.2
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C110"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 0.1,
+      "l1_ratio": 0.8
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C111"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 0.1,
+      "l1_ratio": 0.8
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C112"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 1.0,
+      "l1_ratio": 0.2
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C113"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 1.0,
+      "l1_ratio": 0.2
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C114"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 1.0,
+      "l1_ratio": 0.8
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C115"
+  },
+  {
+    "family": "ElasticNet",
+    "feature_set": "expanded",
+    "params": {
+      "alpha": 1.0,
+      "l1_ratio": 0.8
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C116"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C117"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C118"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 6
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C119"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 6
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C120"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 3
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C121"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C122"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 6
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C123"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 6
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C124"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C125"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C126"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 6
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C127"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 6
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C128"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 3
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C129"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C130"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 6
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C131"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 6
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C132"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C133"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C134"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 6
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C135"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 6
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C136"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 3
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C137"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C138"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 6
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C139"
+  },
+  {
+    "family": "RandomForest",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 6
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C140"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C141"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C142"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 6
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C143"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 6
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C144"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 3
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C145"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C146"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 6
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C147"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 6
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C148"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C149"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C150"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 6
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C151"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 6
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C152"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 3
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C153"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C154"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 6
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C155"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "policy",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 6
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C156"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C157"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C158"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 6
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C159"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 6
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C160"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 3
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C161"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C162"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 6
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C163"
+  },
+  {
+    "family": "ExtraTrees",
+    "feature_set": "expanded",
+    "params": {
+      "max_depth": 4,
+      "min_samples_leaf": 6
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C164"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "core_category",
+    "params": {
+      "depth": 2,
+      "l2_leaf_reg": 3.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C165"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "core_category",
+    "params": {
+      "depth": 2,
+      "l2_leaf_reg": 3.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C166"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "core_category",
+    "params": {
+      "depth": 2,
+      "l2_leaf_reg": 10.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C167"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "core_category",
+    "params": {
+      "depth": 2,
+      "l2_leaf_reg": 10.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C168"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "core_category",
+    "params": {
+      "depth": 4,
+      "l2_leaf_reg": 3.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C169"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "core_category",
+    "params": {
+      "depth": 4,
+      "l2_leaf_reg": 3.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C170"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "core_category",
+    "params": {
+      "depth": 4,
+      "l2_leaf_reg": 10.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C171"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "core_category",
+    "params": {
+      "depth": 4,
+      "l2_leaf_reg": 10.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C172"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "expanded_category",
+    "params": {
+      "depth": 2,
+      "l2_leaf_reg": 3.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C173"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "expanded_category",
+    "params": {
+      "depth": 2,
+      "l2_leaf_reg": 3.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C174"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "expanded_category",
+    "params": {
+      "depth": 2,
+      "l2_leaf_reg": 10.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C175"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "expanded_category",
+    "params": {
+      "depth": 2,
+      "l2_leaf_reg": 10.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C176"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "expanded_category",
+    "params": {
+      "depth": 4,
+      "l2_leaf_reg": 3.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C177"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "expanded_category",
+    "params": {
+      "depth": 4,
+      "l2_leaf_reg": 3.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C178"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "expanded_category",
+    "params": {
+      "depth": 4,
+      "l2_leaf_reg": 10.0
+    },
+    "log_target": false,
+    "corr_threshold": 0.85,
+    "candidate_id": "C179"
+  },
+  {
+    "family": "CatBoost",
+    "feature_set": "expanded_category",
+    "params": {
+      "depth": 4,
+      "l2_leaf_reg": 10.0
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C180"
+  }
+]

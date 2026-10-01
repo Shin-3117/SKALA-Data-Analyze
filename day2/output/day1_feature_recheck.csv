@@ -1,0 +1,16 @@
+feature,cells,match,max_abs_difference
+cycle_life,85,True,0.0
+delta_logvar,85,True,4.440892098500626e-16
+QD_slope_10_100,85,True,7.85504473965748e-17
+mean_chargetime,85,True,1.7763568394002505e-15
+mean_Tavg,85,True,3.552713678800501e-15
+C1,85,True,0.0
+switch_SOC,85,True,0.0
+C2,85,True,0.0
+std_QD,85,True,9.93129189996722e-17
+mean_IR,85,True,1.0061396160665481e-16
+IR_change,85,True,9.985502008591496e-17
+delta_min,85,True,9.71445146547012e-17
+delta_mean,85,True,9.71445146547012e-17
+delta_range,85,True,9.71445146547012e-17
+mean_Tmax,85,True,7.105427357601002e-15

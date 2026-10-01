@@ -1,0 +1,47 @@
+cell_id,policy,cycle_life,planned_split
+B1c0,3.6C(80%)-3.6C,1190.0,Train for CV
+B1c1,3.6C(80%)-3.6C,1179.0,Train for CV
+B1c2,3.6C(80%)-3.6C,1177.0,Train for CV
+B1c3,4C(80%)-4C,1226.0,Train for CV
+B1c4,4C(80%)-4C,1227.0,Train for CV
+B1c5,4.4C(80%)-4.4C,1074.0,Train for CV
+B1c6,4.8C(80%)-4.8C,636.0,Train for CV
+B1c7,4.8C(80%)-4.8C,870.0,Train for CV
+B1c8,5.4C(40%)-3.6C,879.0,Train for CV
+B1c9,5.4C(40%)-3.6C,1054.0,Train for CV
+B1c10,5.4C(50%)-3C,906.0,Train for CV
+B1c11,5.4C(50%)-3C,788.0,Train for CV
+B1c12,5.4C(50%)-3.6C,902.0,Train for CV
+B1c13,5.4C(50%)-3.6C,897.0,Train for CV
+B1c14,5.4C(60%)-3C,880.0,Train for CV
+B1c15,5.4C(60%)-3C,719.0,Train for CV
+B1c16,5.4C(60%)-3.6C,862.0,Train for CV
+B1c17,5.4C(60%)-3.6C,857.0,Train for CV
+B1c18,5.4C(70%)-3C,691.0,Train for CV
+B1c19,5.4C(70%)-3C,788.0,Train for CV
+B1c20,5.4C(80%)-5.4C,534.0,Valid hold-out
+B1c21,5.4C(80%)-5.4C,559.0,Valid hold-out
+B1c22,6C(30%)-3.6C,891.0,Train for CV
+B1c23,6C(30%)-3.6C,1014.0,Train for CV
+B1c24,6C(40%)-3C,1017.0,Train for CV
+B1c25,6C(40%)-3C,854.0,Train for CV
+B1c26,6C(40%)-3.6C,870.0,Train for CV
+B1c27,6C(40%)-3.6C,842.0,Train for CV
+B1c28,6C(50%)-3C,860.0,Train for CV
+B1c29,6C(50%)-3C,917.0,Train for CV
+B1c30,6C(50%)-3.6C,709.0,Train for CV
+B1c31,6C(50%)-3.6C,876.0,Train for CV
+B1c32,6C(60%)-3C,731.0,Valid hold-out
+B1c33,6C(60%)-3C,757.0,Valid hold-out
+B1c34,7C(30%)-3.6C,742.0,Valid hold-out
+B1c35,7C(30%)-3.6C,703.0,Valid hold-out
+B1c36,7C(40%)-3C,704.0,Train for CV
+B1c37,7C(40%)-3C,648.0,Train for CV
+B1c38,7C(40%)-3.6C,617.0,Valid hold-out
+B1c39,7C(40%)-3.6C,625.0,Valid hold-out
+B1c40,8C(15%)-3.6C,966.0,Train for CV
+B1c41,8C(15%)-3.6C,1051.0,Train for CV
+B1c42,8C(25%)-3.6C,702.0,Train for CV
+B1c43,8C(25%)-3.6C,651.0,Train for CV
+B1c44,8C(35%)-3.6C,616.0,Valid hold-out
+B1c45,8C(35%)-3.6C,599.0,Valid hold-out

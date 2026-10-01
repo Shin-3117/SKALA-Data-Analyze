@@ -1,0 +1,55 @@
+{
+  "loaded_batches": [
+    "B1",
+    "B2"
+  ],
+  "structures": [
+    {
+      "batch": "B1",
+      "file": "2017-05-12_batchdata_updated_struct_errorcorrect.mat",
+      "size_bytes": 3025320241,
+      "fields": [
+        "Vdlin",
+        "barcode",
+        "channel_id",
+        "cycle_life",
+        "cycles",
+        "policy",
+        "policy_readable",
+        "summary"
+      ],
+      "raw_cells": 46
+    },
+    {
+      "batch": "B2",
+      "file": "2018-02-20_batchdata_updated_struct_errorcorrect.mat",
+      "size_bytes": 2022599329,
+      "fields": [
+        "Vdlin",
+        "barcode",
+        "channel_id",
+        "cycle_life",
+        "cycles",
+        "policy",
+        "policy_readable",
+        "summary"
+      ],
+      "raw_cells": 47
+    }
+  ],
+  "exact_cross_batch_copied_records": 0,
+  "physical_cell_independence": "unresolved: opaque barcode/channel values are reused; no experimental log is available",
+  "target_policy": "retain provided cycle_life; do not impute targets or replace B1 labels with assumed EOL",
+  "label_limitation": "B1 labels are record length + 1 with no post-cycle1 measured QD<0.88; B2 finite labels match first measured QD<0.88. Different observation/label mechanisms limit EOL interpretation.",
+  "canonical_paper_batch2": "2017-06-30; assignment/local Batch 2 is 2018-02-20; canonical continuation indices are not applied",
+  "source": "https://github.com/rdbraatz/data-driven-prediction-of-battery-cycle-life-before-capacity-degradation/blob/master/LoadData.m",
+  "feature_data_window": "cycle 2..100; slope 10..100; delta 100-10; policies known before cycling",
+  "QD_rule": "finite, >0, <=1.3*median(positive QD at cycles 2..10); no EOL lower-bound deletion",
+  "voltage_rule": "provided descending Vdlin (3.5..2.0V); interpolate onto ascending 2.1..3.4V, 500 points without extrapolation",
+  "units": {
+    "QD": "Ah",
+    "IR": "Ohm per dataset",
+    "Tavg": "degrees Celsius per dataset",
+    "chargetime": "dataset summary units; not independently confirmed, reported as provided"
+  }
+}
