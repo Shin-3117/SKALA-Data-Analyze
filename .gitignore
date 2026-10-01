@@ -1,5 +1,7 @@
 /data/
-day1/output/
+# output folder is ignored except for HTML files
+/day1/output/*
+!/day1/output/*.html
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,macos
