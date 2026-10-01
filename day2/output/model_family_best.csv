@@ -1,0 +1,7 @@
+candidate_id,family,feature_set,log_target,corr_threshold,params,CV_MAPE_pct,CV_std_pct,mean_transformed_features,convergence_warnings
+C118,RandomForest,core,True,0.85,"{""max_depth"": 2, ""min_samples_leaf"": 3}",8.547256602357688,3.2124268573655184,4.0,0
+C166,CatBoost,core_category,True,0.85,"{""depth"": 2, ""l2_leaf_reg"": 3.0}",9.115078122887914,2.971137676550634,5.0,0
+C007,Ridge,delta,False,0.85,"{""alpha"": 10.0}",9.57839958160233,3.952088302296946,1.0,0
+C145,ExtraTrees,core,False,0.85,"{""max_depth"": 4, ""min_samples_leaf"": 3}",9.756647006945741,4.307127816415703,4.0,0
+C088,ElasticNet,core,True,0.85,"{""alpha"": 0.1, ""l1_ratio"": 0.8}",10.637672375691041,4.9234786235103805,4.0,0
+C000,Median,delta,False,0.85,{},13.964109171195592,6.472325420456118,1.0,0

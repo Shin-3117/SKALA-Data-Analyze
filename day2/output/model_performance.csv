@@ -1,0 +1,7 @@
+구분,값,단위,비고
+Train (Batch 1 CV),8.547256602357688,%,5-fold mean; SD=3.212427; 36 cells/18 groups
+Valid (Batch 1 Hold-out),15.583997203902472,%,10 cells/5 groups
+Test (Batch 2),45.50382313688512,%,39 cells; final model frozen by B1 CV
+Gap (Train-Valid),7.036740601544784,%p,Valid minus Train CV
+Gap (Valid-Test),29.919825932982647,%p,Test minus Valid
+Gap (Target-Test),36.403823136885116,%p,Test minus assignment target 9.1

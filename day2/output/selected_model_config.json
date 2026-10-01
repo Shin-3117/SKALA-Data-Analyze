@@ -1,0 +1,11 @@
+{
+  "family": "RandomForest",
+  "feature_set": "core",
+  "params": {
+    "max_depth": 2,
+    "min_samples_leaf": 3
+  },
+  "log_target": true,
+  "corr_threshold": 0.85,
+  "candidate_id": "C118"
+}

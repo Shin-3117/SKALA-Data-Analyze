@@ -97,7 +97,7 @@ def build_model(spec):
     else:
         regressor = CatBoostRegressor(**params, iterations=200, learning_rate=0.03,
                                      random_seed=SEED, verbose=False, allow_writing_files=False,
-                                     thread_count=1, loss_function="RMSE", cat_features=["cat__policy"])
+                                     thread_count=1, loss_function="RMSE", cat_features=("cat__policy",))
     pipeline = Pipeline([("preprocess", preprocess), ("model", regressor)])
     return (TransformedTargetRegressor(regressor=pipeline, func=np.log, inverse_func=np.exp)
             if spec["log_target"] else pipeline)

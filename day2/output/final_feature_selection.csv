@@ -1,0 +1,5 @@
+feature,kept,reason
+delta_logvar,True,kept
+QD_slope_10_100,True,kept
+mean_chargetime,True,kept
+mean_Tavg,True,kept

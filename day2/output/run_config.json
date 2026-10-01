@@ -1,0 +1,84 @@
+{
+  "executed_at": "2026-10-01T17:38:54.592261+09:00",
+  "python_version": "3.12.14",
+  "packages": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "h5py": "3.16.0",
+    "matplotlib": "3.11.2",
+    "scikit-learn": "1.9.1",
+    "catboost": "1.2.10",
+    "joblib": "1.6.0",
+    "threadpoolctl": "3.7.0",
+    "ipython": "9.17.1",
+    "ipykernel": "7.4.0",
+    "nbformat": "5.11.1",
+    "nbclient": "0.11.0"
+  },
+  "random_state": 42,
+  "loaded_batches": [
+    "B1",
+    "B2"
+  ],
+  "source_files": {
+    "B1": "2017-05-12_batchdata_updated_struct_errorcorrect.mat",
+    "B2": "2018-02-20_batchdata_updated_struct_errorcorrect.mat"
+  },
+  "selected": {
+    "family": "RandomForest",
+    "feature_set": "core",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 3
+    },
+    "log_target": true,
+    "corr_threshold": 0.85,
+    "candidate_id": "C118"
+  },
+  "figures": [
+    "eda_cycle_life.png",
+    "eda_degradation.png",
+    "eda_delta_q.png",
+    "eda_delta_life.png",
+    "eda_policy.png",
+    "feature_correlation.png",
+    "model_comparison.png",
+    "actual_vs_predicted.png",
+    "residuals.png",
+    "test_error_groups.png",
+    "valid_importance.png"
+  ],
+  "selection_rule": "minimum B1 training grouped-CV mean MAPE; ties: CV SD, candidate_id",
+  "final_fit_population": "36 B1 training cells; hold-out excluded",
+  "target": "provided cycle_life (positive), no target imputation",
+  "cv": "GroupKFold(5), groups=original policy, hold-out from DAY 1 seed 42 plan",
+  "fixed_model_parameters": {
+    "RandomForest_ExtraTrees": {
+      "n_estimators": 200,
+      "random_state": 42,
+      "n_jobs": 1
+    },
+    "CatBoost": {
+      "iterations": 200,
+      "learning_rate": 0.03,
+      "random_seed": 42,
+      "thread_count": 1
+    },
+    "ElasticNet": {
+      "max_iter": 30000,
+      "tol": 1e-06,
+      "random_state": 42
+    }
+  },
+  "cv_optimism": "reported winning CV was also used for candidate selection; not nested CV",
+  "physical_identity_status": "unresolved: no trusted physical identifier or experiment log",
+  "source_sha256": {
+    "day2/src/__init__.py": "2e02666ed3ba69e377260c923a1003ee34dc52b6235906bf4c54db86f8a4d794",
+    "day2/src/execute_notebook.py": "87d06cdb44741c02488914a49aadd4e3c9d56a35d611f8d87447f154c8720f95",
+    "day2/src/features.py": "402ddf00a7354235428787dd08a19671ad515c429ed732d17250038e1c86158c",
+    "day2/src/modeling.py": "228e1cab3d9e2b48bc32bc129b1cbf6234ebabad09a0c8a974a78d69c01c578f",
+    "day2/src/reporting.py": "e3ba336cda391439efc747abe79ebe159985df11f6f83ea94d8b9a1f083380e2",
+    "day2/src/train.py": "ac43e9a393724e24ba7b490917cbcba7c8e50d5cffce07e6f0d2043ea2fb66ea"
+  }
+}

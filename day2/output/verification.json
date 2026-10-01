@@ -1,0 +1,50 @@
+{
+  "checks": {
+    "only_B1_B2_used": true,
+    "one_row_per_cell": true,
+    "no_holdout_policy_overlap": true,
+    "group_folds_disjoint": true,
+    "OOF_covers_each_train_cell_once": true,
+    "performance_and_predictions_match": true,
+    "gap_arithmetic_correct": true,
+    "selected_minimum_CV": true,
+    "imputer_fit_on_training_only": true,
+    "transform_does_not_refit_on_test": true,
+    "saved_model_prediction_roundtrip": true,
+    "DAY1_features_recomputed_match": true,
+    "README_sections_match_sample": true,
+    "README_local_links_exist": true,
+    "path_independent_root_and_day2": true,
+    "all_predictions_finite": true
+  },
+  "all_passed": true,
+  "missing_links": [],
+  "used_cells": {
+    "B1": 46,
+    "B2": 39
+  },
+  "candidate_count": 181,
+  "fold_count": 5,
+  "scientific_limitations": [
+    "different target/observation mechanisms between batches",
+    "physical cell independence unresolved",
+    "DAY1 explored B1 hold-out and B2",
+    "winning CV used for selection; non-nested"
+  ],
+  "external_actions": "no GitHub push/publication or Slack submission performed",
+  "notebook": {
+    "code_cells": 7,
+    "all_executed": true,
+    "error_outputs": 0
+  },
+  "cli_reproduction": {
+    "working_directory": "project root",
+    "completed": true,
+    "same_candidate": "C118",
+    "same_metrics_as_notebook": true
+  },
+  "visual_review": {
+    "images": 11,
+    "status": "completed"
+  }
+}

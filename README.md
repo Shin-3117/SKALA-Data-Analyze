@@ -1,201 +1,224 @@
 # ESS 배터리 수명 예측
 
-초기 100사이클의 측정 데이터로 배터리의 총 수명 `cycle_life`를 예측하는 회귀 프로젝트입니다. 초기 열화 신호와 충전 조건을 활용해 수명을 추정하고, 서로 다른 실험 배치에서도 예측이 유지되는지 평가하여 ESS 교체·운영 계획에 활용할 가능성을 검토합니다.
+초기 100사이클의 측정 데이터로 제공된 배터리 총 수명 `cycle_life`를 회귀 예측하고, 별도 실험 배치에서 일반화 성능을 평가합니다. ESS 교체·점검 계획에 활용할 가능성과 데이터·모델의 한계를 함께 검토합니다.
 
-> **현재 상태: DAY 1 결과를 바탕으로 작성한 DAY 2 설계 문서입니다.** EDA 수치는 기존 분석 산출물에서 확인했으며, DAY 2 모델 학습·튜닝·최종 성능 평가는 아직 수행하지 않았습니다. 아래 모델·파이프라인은 개발 계획이고 성능은 미측정입니다.
+**결과:** 최종 모델은 RandomForest이며 Batch 1 그룹 CV 8.547%, hold-out 15.584%, Batch 2 45.504%입니다. 과제 비교 목표 9.1%에 대해 목표에 미달합니다.
+
+> **라벨 해석의 한계:** Batch 1의 46셀 모두 수명 라벨이 기록 길이+1이며, 저장된 기록에서 cycle 2 이후 QD<0.88Ah 도달은 없습니다. Batch 2의 유효 39셀은 제공 라벨과 최초 0.88Ah 미만 도달 사이클이 일치합니다. 아래 수치는 이 서로 다른 방식의 **제공 라벨에 대한 예측 오차**이며, 실제 EOL 수명을 동일 조건으로 검증한 결과로 단정할 수 없습니다.
 
 ## 프로젝트 개요
 
-- 데이터셋: MIT–Stanford Battery Dataset (Severson et al., Nature Energy 2019)
-- 학습 데이터: Batch 1 (2017-05-12)
-- 평가 데이터: Batch 2 (2018-02-20)
-- 태스크: **Regression — 초기 100사이클 기반 Cycle Life 예측**
-- 타깃: `cycle_life`, EOL까지의 총 사이클 수입니다. 잔여 수명(RUL) 자체가 아니며, 과제의 용량 80% 기준과 로컬 라벨의 정합성을 확인합니다.
-- 평가 지표: MAPE(%), 과제 비교 목표 9.1%
-- 사용 범위: **Batch 1·2만 사용하며 Batch 3은 DAY 2에서 제외합니다.**
+- 데이터셋: 과제 제공 MIT–Stanford Battery Dataset, Severson et al. (2019)
+- 학습 데이터: Batch 1 (2017-05-12), 46셀 중 학습 36셀·검증 10셀
+- 평가 데이터: Batch 2 (2018-02-20), 원본 47셀 중 라벨 결측 8셀을 제외한 39셀
+- 태스크: **Regression — 초기 100사이클에서 제공된 총 `cycle_life` 예측**
+- 타깃: 제공된 총 사이클 수입니다. 잔여 수명(RUL) 자체가 아니며 관측 기간 이후의 실제 EOL 라벨인지 추가 확인이 필요합니다.
+- 주평가 지표: MAPE(%), 과제 비교 목표 9.1%
+- 사용 범위: **Batch 1·2만 사용하며 Batch 3은 로딩·피처 생성·평가에서 제외했습니다.**
+- 상세 작업 기준: [day2/day2.md](day2/day2.md)
 
 ## 파일 구조
 
-현재 파일 구조와 DAY 2 추가 예정 항목은 다음과 같습니다. `(예정)`으로 표시한 항목은 아직 생성하지 않았습니다.
-
 ```text
-├── data/                            # 로컬 원본 .mat 데이터
-├── 요구사항/                        # 과제·평가 기준·README 샘플
-├── day1/
-│   ├── day1.md
-│   ├── day1.ipynb                    # 기존 EDA와 모델 설계
-│   ├── requirements.txt             # 기존 EDA 환경
-│   └── output/                      # 통계·피처·분할 계획·그래프
-├── day2/
-│   ├── day2.md                       # DAY 2 작업 지시서
-│   ├── day2.ipynb                    # 모델 개발·평가 (예정)
-│   └── output/                      # 결과 폴더 (예정)
-│       ├── feature_design.csv
-│       ├── split_manifest.csv
-│       ├── model_comparison.csv
-│       ├── model_performance.csv
-│       ├── predictions.csv
-│       ├── run_config.json
-│       └── image/
-└── README.md
+├── README.md
+├── requirements.txt                 # DAY 2 실제 환경의 패키지·버전
+├── data/
+│   └── README.md                    # 원본 획득·배치 안내
+├── 요구사항/                        # 과제·평가 기준·샘플
+├── day1/                            # 기존 EDA·설계 산출물 보존
+└── day2/
+    ├── day2.md
+    ├── day2.ipynb                   # 실행한 분석 코드·출력·해석
+    ├── src/
+    │   ├── features.py              # 원본 로딩·초기 피처·라벨 감사
+    │   ├── modeling.py              # 그룹 CV·전처리·후보·평가
+    │   ├── reporting.py             # 그래프·피처표·README 생성
+    │   └── train.py                 # 전체 실행·정합성 검증
+    └── output/
+        ├── early_features.csv
+        ├── cell_audit.csv
+        ├── data_audit.json
+        ├── feature_design.csv
+        ├── split_manifest.csv
+        ├── model_comparison.csv
+        ├── cv_fold_results.csv
+        ├── feature_ablation.csv
+        ├── model_performance.csv
+        ├── predictions.csv
+        ├── final_model.joblib
+        ├── run_config.json
+        ├── verification.json
+        └── image/
 ```
-
-DAY 2 결과 폴더의 파일은 모두 생성 예정입니다. DAY 1 산출물은 보존합니다.
 
 ## 환경 설정
 
-기존 EDA의 패키지·버전은 [day1/requirements.txt](day1/requirements.txt)에 기록되어 있습니다. 해당 환경 설치 명령은 프로젝트 루트 기준으로 다음과 같습니다.
+실행 환경은 Python 3.12.14입니다. 패키지 버전은 [requirements.txt](requirements.txt)에 기록했습니다. 원본 데이터를 배치한 프로젝트 루트에서 다음 명령을 실행합니다.
 
 ```bash
-python -m pip install -r day1/requirements.txt
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python day2/src/train.py
 ```
 
-DAY 2에는 모델링용 패키지를 추가하고 실제 사용한 Python·패키지 버전을 기록할 예정입니다. **현재 DAY 2 실행 파일과 모델링 환경은 미구현 상태입니다.** 최종 설치·실행 명령은 구현 및 재현 확인 후 갱신합니다. 기존 DAY 1 노트북은 Batch 3 분석도 포함하므로 DAY 2 실행을 위해 전체를 다시 실행하지 않습니다.
+기존 `.venv`가 있다면 해당 환경을 그대로 사용할 수 있습니다. `day2` 폴더에서는 `../.venv/bin/python src/train.py`로 같은 출력 위치에 실행합니다. 노트북은 `.venv`를 커널로 선택하고 위에서 아래로 실행합니다. CLI와 노트북은 같은 모듈을 호출하며 `day2/output/` 및 이 README의 결과를 갱신합니다.
 
-**데이터 준비**
+[데이터 획득·배치 안내](data/README.md)에 따라 아래 두 원본 파일을 `data/`에 놓습니다. 원본 `.mat`는 GitHub 업로드 대상에서 제외합니다.
 
-[과제 제공 데이터셋](https://www.kaggle.com/datasets/itshpark/data-driven-prediction-of-battery-cycle)의 다음 파일을 프로젝트 루트의 `data/`에 배치합니다. 대용량 원본 데이터는 GitHub 업로드 대상에서 제외합니다.
-
-| 용도 | 파일명 |
-| --- | --- |
-| Batch 1 학습·검증 | `2017-05-12_batchdata_updated_struct_errorcorrect.mat` |
-| Batch 2 최종 테스트 | `2018-02-20_batchdata_updated_struct_errorcorrect.mat` |
-
-모든 `.mat` 파일을 일괄 읽지 않고 위 두 파일만 명시적으로 선택합니다. DAY 1의 공통 CSV를 재사용할 때도 `batch`가 `B1` 또는 `B2`인 행만 사용합니다.
-
-기존 품질 집계상 Batch 1은 46셀 모두 타깃을 보유하고, Batch 2는 원본 47셀 중 39셀이 타깃을 보유합니다. 타깃 결측 8셀은 감독학습 성능 평가에서 제외합니다. 최종 사용 셀 수는 DAY 2의 데이터·라벨 검증 후 확정합니다. 근거는 [배치 품질 집계](day1/output/batch_quality.csv)와 [셀별 감사 기록](day1/output/cell_audit.csv)입니다.
+- `2017-05-12_batchdata_updated_struct_errorcorrect.mat`
+- `2018-02-20_batchdata_updated_struct_errorcorrect.mat`
 
 ## EDA
 
-아래 내용은 기존 DAY 1 분석의 Batch 1·2 결과입니다. 상세 그래프·해석은 [day1/day1.ipynb](day1/day1.ipynb)에서 확인할 수 있습니다.
+- **Cycle Life 분포:** 제공 라벨 중앙값은 Batch 1 858.5사이클(n=46), Batch 2 472.0사이클(n=39)입니다. Batch 1의 550 미만 표본은 1셀로 분류 검증이 불안정해 회귀를 선택했습니다. Batch 2의 짧은 라벨 분포와 서로 다른 라벨 생성 방식을 구분해 해석합니다.
 
-- **Cycle Life 분포**
-  - 수명 중앙값은 Batch 1이 858.5사이클(n=46), Batch 2가 472사이클(n=39)입니다.
-  - 설명용 장수명(>1,000) 비율은 각각 21.7%, 7.7%, 단수명(<500) 비율은 각각 0%, 71.8%입니다. 분류 후보의 550사이클 기준과 구분합니다.
-  - 핵심 발견: Batch 1의 550 미만 표본이 1셀로 분류 검증이 불안정합니다. 회귀를 선택하고 배치 간 수명 분포 이동을 평가에 반영합니다.
+![Batch 1·2 제공 수명 라벨 분포](day2/output/image/eda_cycle_life.png)
 
-- **열화 곡선 분석**
-  - 기존 EDA에서 장·단수명 셀의 방전 용량 추이와 전체 수명 구간의 knee 후보를 탐색했습니다. 셀별 곡선과 탐색 결과는 노트북에서 확인합니다.
-  - 핵심 시사점: 전체 수명에서 구한 knee·말기 기울기는 예측 시점 이후 정보를 포함하므로 모델 입력에서 제외합니다. 초기 100사이클 이내의 기울기·변동성을 검토합니다.
+- **열화 곡선 분석:** 배치별 최소·최대 제공 라벨의 대표 셀을 비교했습니다. 회색 영역만 입력 관측 기간입니다. 0.88Ah 선은 원논문 로더의 절대 용량 참조 기준이며 각 셀 초기 용량의 80%와 동일하다고 표시하지 않습니다. 전체 기록의 knee·종료 용량·기록 길이는 모델 입력에서 제외했습니다.
 
-- **ΔQ(V) 곡선 분석**
-  - `ΔQ(V)=Q_100(V)−Q_10(V)`를 계산하며, 기존 설계는 공통 전압 구간 2.1~3.4V·500점입니다.
-  - 핵심 발견: Batch 1에서 ΔQ 로그 분산과 수명의 Pearson r=−0.887, Spearman ρ=−0.872(n=46)입니다. 이를 우선 후보로 두고 전압 정렬·사이클 번호·비정상값 처리를 검증합니다.
+![배치별 대표 셀의 방전 용량과 입력 관측 기간](day2/output/image/eda_degradation.png)
 
-- **충전 속도(C-rate)와 수명의 관계**
-  - 정책별 수명·표본 수를 비교하고 정책을 1단계 C-rate·전환 SOC·2단계 C-rate로 분해했습니다.
-  - 핵심 발견: Batch 1의 `C1`과 수명은 Pearson r=−0.580(n=46)입니다. 다른 실험 조건도 함께 달라지므로 고속 충전의 인과효과로 단정하지 않습니다.
+- **ΔQ(V) 곡선 분석:** `Q100−Q10`을 확인된 Vdlin 축(3.5→2.0V)에서 공통 2.1~3.4V·500점으로 보간했습니다. 띠는 그룹의 IQR입니다. Batch 1에는 <500 라벨 셀이 없어 해당 그룹 곡선이 없습니다. Batch 1 ΔQ 로그 분산–라벨 Pearson r=-0.887이며, 이를 후보 선정 근거로 삼았습니다.
 
-- **추가 확인: 초기 신호의 상관관계와 다중공선성**
-  - Batch 1의 ΔQ 최소–범위 r=−0.999966, 평균 온도–최대 온도 r=0.955804(n=46)입니다.
-  - QD 기울기–수명 상관은 Batch 1에서 +0.524, Batch 2에서 −0.484입니다.
-  - 핵심 발견: 중복 피처 축소·규제와 배치 간 관계 변화 점검이 필요합니다. 최종 피처 선택은 Batch 1 학습 fold 내부에서 수행합니다.
+![수명 그룹별 초기 ΔQ 곡선](day2/output/image/eda_delta_q.png)
 
-수치 근거: [수명 통계](day1/output/cycle_life_statistics.csv), [수명 그룹](day1/output/life_groups.csv), [피처–타깃 상관](day1/output/feature_target_correlations.csv), [공선성 후보 쌍](day1/output/collinearity_pairs.csv).
+![초기 ΔQ 로그 분산과 제공 라벨의 관계](day2/output/image/eda_delta_life.png)
+
+- **충전 속도(C-rate)와 수명의 관계:** 정책별 평균 라벨·표본 수를 함께 확인했습니다. 오차막대는 표준편차이며 1셀 정책의 막대는 변동성 추정이 아닙니다. 충전 조건과 다른 실험 조건이 함께 달라지므로 정책 차이를 인과효과로 단정하지 않습니다. 수치 분해와 정책 범주형 처리 후보를 CV로 비교했습니다.
+
+![배치별 충전 정책의 제공 수명 라벨 평균과 표본 수](day2/output/image/eda_policy.png)
+
+- **추가 확인 — 다중공선성:** 아래 행렬은 Batch 1 학습 부분 36셀의 초기 피처 상관입니다. 각 CV fold 안에서 대표 피처 우선순위에 따라 공선성을 축소하고, Ridge 중복 피처군의 축소 유무도 비교했습니다. 결측 대치·선택·스케일링은 해당 학습 fold에만 fit했습니다.
+
+![학습 부분 초기 피처의 상관관계](day2/output/image/feature_correlation.png)
 
 ## Modeling
 
 ### 피처 엔지니어링 전략
 
-셀당 한 행의 입력 테이블을 만들고, 초기 100사이클 이내의 측정치와 실험 시작 시 알려진 충전 정책을 사용합니다. 아래는 **후보 피처**이며 최종 채택 여부는 Batch 1 CV로 결정합니다.
+입력 후보군은 `core`이며 전달된 변수는 `delta_logvar, QD_slope_10_100, mean_chargetime, mean_Tavg`입니다. 아래 표는 학습 부분에 최종 fit한 전처리에서 유지된 피처입니다. CV fold마다 공선성에 따라 유지 피처가 달라질 수 있으며 최종 피처만 먼저 선택해 CV를 다시 계산하지 않았습니다.
 
-| 후보 피처 | 정의·관측 기간 | 선정 근거와 처리 계획 |
-| --- | --- | --- |
-| `delta_logvar` | `log10(var(Q_100(V) − Q_10(V)))`. 기존 설계: 2.1~3.4V, 공통 500점 | Batch 1에서 강한 수명 상관이 확인됐습니다. 전압 축·분산 계산 규칙을 검증하고 0분산·비유한값은 결측 처리합니다. |
-| `QD_slope_10_100` | 10~100사이클의 방전 용량–사이클 선형 기울기 | 초기 열화 방향을 표현합니다. 비정상 QD 처리와 배치별 관계 차이를 점검합니다. |
-| `mean_chargetime` | 2~100사이클 중 양수 충전시간의 평균 | 충전 과정의 요약 변수입니다. 단위를 확인하고 C-rate·전류 피처와 중복을 비교합니다. |
-| `mean_Tavg` | 2~100사이클의 평균 온도 요약 | 온도 대표값으로 검토합니다. `mean_Tmax`와 동시에 자동 채택하지 않고 대표값·대체 피처를 비교합니다. |
-| `C1`, `switch_SOC`, `C2` | 정책 문자열에서 추출한 1단계 C-rate·전환 SOC(%)·2단계 C-rate | 미관측 정책에도 수치적 표현을 적용할 수 있는지 검토합니다. 파싱 실패·단위·정책 접미사를 기록합니다. |
-| `std_QD`, `mean_IR`, `IR_change` | 초기 QD 변동성, 초기 양수 IR 평균, 초기–후기 IR 변화(100사이클 이내) | 보조 후보입니다. 결측·스파이크 민감도와 피처군 추가·제거 실험으로 필요성을 확인합니다. |
-| 정책 문자열 | 실험 시작 시의 원문 정책 | One-hot 또는 CatBoost의 범주형 처리와 수치 분해 방식을 비교하고 미관측 범주 대응을 확인합니다. |
+| 최종 피처 | 계산식 | 관측 사이클 | 단위 | 선정 근거 |
+| --- | --- | --- | --- | --- |
+| delta_logvar | log10(var(Q100-Q10, ddof=0)), 2.1..3.4V, 500 points | 10,100 | log10(Ah^2) | B1 r=-0.887; primary signal |
+| QD_slope_10_100 | polyfit(cycle,QD,1)[0] | 10..100 | Ah/cycle | B1 r=0.524; initial slope |
+| mean_chargetime | mean(positive chargetime) | 2..100 | dataset units | B1 r=0.577; charging process |
+| mean_Tavg | mean(Tavg) | 2..100 | deg C | B1 r=-0.482; representative temperature |
 
-세부 정의와 근거는 [DAY 1 피처 설계표](day1/output/feature_design.csv)를 따릅니다. 피처별 단위·유효 사이클·계산식은 구현 시 최종 확정합니다.
+QD는 비유한·0 이하·초기 2~10사이클 양수 중앙값의 1.3배 초과만 결측 처리하고, EOL 이하 용량을 일괄 제거하지 않았습니다. ΔQ 분산은 `ddof=0`이며 0·비유한값은 결측 처리합니다. 수치 결측은 학습 fold 중앙값으로 대치하고 상수·고상관 피처를 제거합니다. 기본 공선성 기준은 `|r|≥0.85`, 중복 피처 비교의 1.01은 상관 기반 제거를 비활성화한 설정입니다. 정책 문자열은 One-hot의 미관측 범주 무시 또는 CatBoost 범주 처리로 대응합니다.
 
-다중공선성은 학습 fold의 피처 간 상관과 필요시 VIF·조건수로 점검합니다. ΔQ 통계군·온도군 등에서는 대표 피처를 우선 사용하고, 규제와 피처군 추가·제거 비교로 영향을 확인합니다. `|r|≥0.85`는 탐색 기준이며 단독으로 최종 제거를 결정하지 않습니다.
+| Ridge 피처군 | 공선성 기준 | 로그 타깃 | CV MAPE(%) | 표준편차(%p) |
+| --- | --- | --- | --- | --- |
+| delta | 0.850 | False | 9.578 | 3.952 |
+| delta_qd | 0.850 | False | 10.257 | 3.920 |
+| duplicates | 1.010 | False | 10.424 | 4.650 |
+| core_category | 0.850 | False | 11.207 | 5.262 |
+| core | 0.850 | False | 11.857 | 5.098 |
+| duplicates | 0.850 | False | 11.857 | 5.098 |
+| expanded | 0.850 | False | 12.156 | 5.920 |
+| policy | 0.850 | False | 12.491 | 5.772 |
 
-셀·배치 ID, 타깃에서 만든 수명 그룹, 전체 기록 길이, 말기 용량·knee·종료 비율은 분할 관리와 설명에만 사용하며 모델 입력에서 제외합니다.
+위 비교는 각 피처군 내에서 CV로 고른 최선 설정이며 통제된 단일 파라미터 효과의 인과실험은 아닙니다. 중복 피처를 남긴 Ridge의 CV가 더 낮은 경우도 있어 제거만으로 성능이 항상 개선된다고 결론 내리지 않습니다. 최종 모델의 4개 수치 피처는 상관 기준으로 제거되지 않았고, 학습 부분에서 대치 후 표준화한 행렬의 조건수는 2.549입니다. 전체 후보는 [model_comparison.csv](day2/output/model_comparison.csv), 피처 정의·채택/제외 근거는 [feature_design.csv](day2/output/feature_design.csv), 최종 축소 결과는 [final_feature_selection.csv](day2/output/final_feature_selection.csv)에 기록했습니다.
 
 ### 모델 선택 및 근거
 
-- 후보 모델: 중앙값 기준 모델, Ridge / Elastic Net, Random Forest / Extra Trees, CatBoost(보조 후보)
-- 최종 모델: **미정**
-- 선택 이유: Batch 1 CV MAPE·fold 간 안정성·피처 수·해석 가능성을 비교해 확정합니다. Batch 2 성능으로 모델·피처·파라미터를 다시 선택하지 않습니다.
+- 후보 모델: 중앙값 기준, Ridge/Elastic Net, Random Forest/Extra Trees, CatBoost
+- 최종 모델: **RandomForest**, 후보 `C118`
+- 최종 설정: `{"max_depth": 2, "min_samples_leaf": 3}`, 로그 타깃 `True`, 공선성 기준 `0.85`
+- 고정 설정: Random Forest/Extra Trees는 200개 트리와 random_state=42를 사용했습니다. 얕은 깊이·최소 leaf 표본 수로 소표본 과적합을 제한하고 로그 타깃의 효과는 원래 단위 MAPE로 비교했습니다.
+- 선택 이유: 사전 정의한 181개 설정 중 **Batch 1 그룹 CV 평균 MAPE가 가장 낮았습니다**. 기준 모델 13.964% 대비 5.417%p 개선했고 fold 표준편차는 3.212%p입니다. Valid·Batch 2 결과로 모델을 바꾸지 않았습니다.
 
-| 후보 | 설계상 선정 이유 | 검증·과적합 제어 계획 | CV MAPE 평균±표준편차(%) |
-| --- | --- | --- | --- |
-| 중앙값 기준 모델 | 소표본과 배치 이동 조건의 기본 난이도를 확인합니다. | 각 학습 fold 타깃 중앙값으로 검증 fold를 예측합니다. | 미측정 |
-| Ridge / Elastic Net | 강한 ΔQ 신호와 중복 피처에 규제를 적용합니다. | 표준화, 제한된 `alpha`·`l1_ratio` 후보, 피처군 비교 | 미측정 |
-| Random Forest / Extra Trees | 비선형 관계·피처 상호작용 가능성을 선형 모델과 비교합니다. | 깊이 2~4, 최소 leaf 표본 수 3~8을 우선 검토 | 미측정 |
-| CatBoost — 보조 후보 | 정책 원문의 범주형 처리 필요성을 검증합니다. | 깊이 2~4, 강한 규제, 작은 탐색 범위, 수치 분해 대안과 비교 | 미측정 |
+| 후보 모델 | 피처군 | 로그 타깃 | 선택 파라미터 | CV MAPE(%) | 표준편차(%p) |
+| --- | --- | --- | --- | --- | --- |
+| RandomForest | core | True | {"max_depth": 2, "min_samples_leaf": 3} | 8.547 | 3.212 |
+| CatBoost | core_category | True | {"depth": 2, "l2_leaf_reg": 3.0} | 9.115 | 2.971 |
+| Ridge | delta | False | {"alpha": 10.0} | 9.578 | 3.952 |
+| ExtraTrees | core | False | {"max_depth": 4, "min_samples_leaf": 3} | 9.757 | 4.307 |
+| ElasticNet | core | True | {"alpha": 0.1, "l1_ratio": 0.8} | 10.638 | 4.923 |
+| Median | delta | False | {} | 13.964 | 6.472 |
 
-최종 모델과 파라미터는 **미정**입니다. Batch 1 CV MAPE, fold 간 안정성, 피처 수와 해석 가능성을 기준으로 선택하고 hold-out 결과를 해석할 계획입니다. 탐색 범위는 구현 시 확정하고 기록합니다. 로그 타깃을 비교한다면 역변환 후 원래 사이클 단위로 평가합니다. 후보의 상세 근거는 [모델 후보표](day1/output/model_candidates.csv)에 있습니다.
+선형 모델은 강한 ΔQ 신호·소표본·공선성에 대응하는 규제 후보, 트리는 비선형·상호작용 비교 후보, CatBoost는 정책 범주형 처리 후보로 선정했습니다. Ridge alpha는 0.01~100, Elastic Net alpha는 0.01/0.1/1과 l1_ratio 0.2/0.8, 트리 깊이는 2/4·최소 leaf 표본 수는 3/6, CatBoost 깊이는 2/4·l2_leaf_reg는 3/10을 비교했습니다. 로그 타깃은 역변환 후 MAPE를 계산했습니다. 정확한 전체 조합은 [search_space.json](day2/output/search_space.json)에 있습니다.
 
-**데이터 분할과 파이프라인**
+![후보별 최선 설정의 그룹 CV MAPE와 fold 표준편차](day2/output/image/model_comparison.png)
 
-[기존 분할 계획](day1/output/planned_b1_split.csv)은 seed=42로 약 20%의 정책 그룹을 hold-out으로 정했습니다. 아래 셀·정책 수는 계획 파일에서 확인한 값이며, 데이터 검증으로 대상 셀이 바뀌면 변경 근거를 기록하고 갱신합니다.
+기존 seed=42 정책 hold-out 계획을 유지했습니다. 학습 36셀·18정책에서 5-fold GroupKFold로 선택하고, 별도 Valid 10셀·5정책과 Batch 2 39셀을 평가했습니다. 정책 그룹은 학습·검증 및 각 CV fold 사이에서 겹치지 않습니다. 동일 물리 셀의 독립성은 별도 실험 로그가 없어 완전히 보장하지 못합니다. [분할 목록](day2/output/split_manifest.csv)과 [fold별 점수](day2/output/cv_fold_results.csv)를 저장했습니다.
 
-| 구분 | 계획 데이터 | 역할 |
-| --- | --- | --- |
-| Train (Batch 1 CV) | 36셀·18정책 그룹, 수명 636~1,227사이클 | 5-fold GroupKFold로 모델·피처·파라미터를 비교합니다. 보고 값은 검증 fold MAPE 평균입니다. |
-| Valid (Batch 1 Hold-out) | 10셀·5정책 그룹, 수명 534~757사이클 | CV에서 선택한 모델을 고정 검증셋에 평가합니다. |
-| Test (Batch 2) | 기존 집계상 타깃 보유 39셀 | 최종 설정을 고정한 뒤 외부 배치 성능을 측정합니다. |
-
-계획 파일상 Train과 Valid의 정책 그룹은 겹치지 않습니다. 동일 물리 셀의 중복·이어진 측정 여부는 추가 확인이 필요합니다. 분할은 셀·정책 그룹 단위로 관리하며 반복 측정 행을 무작위로 나누지 않습니다.
-
-파이프라인은 **결측 대치 → 공선성 축소·피처 선택 → 스케일링·인코딩 → 모델 학습** 순서로 설계합니다. 학습이 필요한 모든 처리는 각 학습 fold에서만 적합합니다. 후보 간 동일한 분할을 사용하고 Batch 2 결과로 피처·파라미터를 다시 고르지 않습니다.
-
-주평가 모델은 hold-out을 제외한 Batch 1 학습 부분으로 학습하고 같은 모델로 Valid와 Batch 2를 예측합니다. 전체 Batch 1 재학습 결과를 추가한다면 주평가 표와 구분합니다.
+최종 모델은 hold-out을 제외한 Batch 1 학습 36셀에 fit했습니다. 전처리 → 모델의 동일 파이프라인으로 Valid·Test를 예측하고 Train은 OOF 예측을 저장했습니다. [최종 모델](day2/output/final_model.joblib)과 [실행 설정](day2/output/run_config.json)으로 재현할 수 있습니다. CV 점수는 후보 선택에도 사용됐으므로 검색으로 인한 낙관성이 남습니다.
 
 ## 성능 결과
 
-**현재 모든 성능은 미측정입니다.** MAPE 9.1%는 요구사항에서 제공한 비교 목표입니다.
+`MAPE(%) = 100 × mean(|y−ŷ|/|y|)`이며 타깃은 제공 `cycle_life`입니다.
 
-`MAPE(%) = 100 × mean(|y − ŷ| / |y|)`
+| 구분 | MAPE / Gap | 단위 | 계산·평가 기준 |
+| --- | --- | --- | --- |
+| Train (Batch 1 CV) | 8.547 | % | 5-fold mean; SD=3.212427; 36 cells/18 groups |
+| Valid (Batch 1 Hold-out) | 15.584 | % | 10 cells/5 groups |
+| Test (Batch 2) | 45.504 | % | 39 cells; final model frozen by B1 CV |
+| Gap (Train-Valid) | 7.037 | %p | Valid minus Train CV |
+| Gap (Valid-Test) | 29.920 | %p | Test minus Valid |
+| Gap (Target-Test) | 36.404 | %p | Test minus assignment target 9.1 |
 
-| 구분 | MAPE (%) / Gap (%p) | 산식·해석 |
-| --- | ---: | --- |
-| Train (Batch 1 CV) | 미측정 | hold-out 제외 학습 부분의 CV 평균. 표준편차·fold 수 병기 |
-| Valid (Batch 1 Hold-out) | 미측정 | 고정 검증 부분 평가 |
-| Test (Batch 2) | 미측정 | 최종 모델의 외부 배치 평가 |
-| Gap (Train-Valid) | 미측정 | `Valid MAPE − Train CV MAPE` |
-| Gap (Valid-Test) | 미측정 | `Test MAPE − Valid MAPE` |
-| Gap (Target-Test) | 미측정 | `Test MAPE − 9.1` |
+Batch 1 그룹 CV 8.547%, hold-out 15.584%, Batch 2 45.504%입니다. 과제 비교 목표 9.1%에 대해 목표에 미달합니다. Gap은 퍼센트포인트(%p)이며 양수는 오차 증가·목표 미달입니다. Train–Valid 차이는 과적합뿐 아니라 hold-out의 수명·정책 이동도 반영합니다. Valid 라벨 범위는 534~757, 학습은 636~1227입니다.
 
-Gap은 퍼센트포인트(%p)이며 양수는 오차 증가·목표 미달을 뜻합니다. Train–Valid 차이만으로 과적합을 단정하지 않습니다. 기존 hold-out은 학습 부분보다 수명 범위가 짧고 Batch 2의 타깃 분포도 달라 이러한 조건을 함께 해석합니다.
+| 구분 | 셀 수 | Pooled MAPE(%) | MAE(사이클) | RMSE(사이클) | R2 |
+| --- | --- | --- | --- | --- | --- |
+| Train OOF | 36 | 8.793 | 80.025 | 104.321 | 0.602 |
+| Valid | 10 | 15.584 | 97.875 | 105.264 | -0.962 |
+| Test | 39 | 45.504 | 216.582 | 228.619 | -0.086 |
 
-MAE·RMSE·R²는 보조 지표로 추가할 수 있습니다. 로컬 데이터의 구성·라벨·전처리·분할이 논문과 동일한지 확인되지 않았으므로 목표와의 차이를 동일 조건의 논문 재현 결과라고 표현하지 않습니다.
+Train 주지표는 5개 fold MAPE의 단순 평균이고 위 보조 표는 셀별 OOF를 합친 MAPE입니다. fold 크기가 달라 두 값은 다를 수 있습니다. 원논문 로더의 Batch 2는 2017-06-30이고 과제·로컬 Batch 2는 2018-02-20입니다. 원논문 분할·라벨·전처리와 동일 조건의 재현이라고 주장하지 않으며 9.1%는 과제 비교 기준으로 사용했습니다.
+
+![Train OOF·Valid·Test 실제 제공 라벨과 예측값](day2/output/image/actual_vs_predicted.png)
 
 ## 오류 분석
 
-예측값이 없으므로 실제 오류 분석은 아직 수행하지 않았습니다. 평가 후 다음 내용을 채울 예정입니다.
+Batch 2 평균 예측−라벨은 201.783사이클로 과대예측 방향입니다. 수명 구간별 성능은 다음과 같습니다.
 
-- 실제값–예측값 산점도와 기준선 `y=x`, 수명 구간별 잔차·MAPE
-- 충전 정책·미관측 정책·측정 구조별 오차와 대상 셀 수
-- 큰 오차 셀의 ID·실제값·예측값·절대오차·절대백분율오차
-- 관찰 사실, 원인 가설, 확인 근거, 개선 방향
+| 수명 구간 | 셀 수 | MAPE(%) | MAE(사이클) | 평균 예측−라벨(사이클) |
+| --- | --- | --- | --- | --- |
+| long >1000 | 3 | 8.280 | 94.301 | -94.301 |
+| middle 500-1000 | 8 | 22.519 | 151.976 | 150.557 |
+| short <500 | 28 | 56.059 | 248.142 | 248.142 |
 
-Batch 2 오류 분석에서 도출한 개선안은 후속 연구 계획으로 기록합니다. 이를 반영한 모델은 기존 최종 테스트와 구분하고 별도의 검증 데이터가 필요한지 설명합니다.
+![수명 라벨 구간별 Batch 2 오차](day2/output/image/test_error_groups.png)
+
+절대백분율오차가 큰 Batch 2 셀의 상위 5개입니다.
+
+| 셀 | 정책 | 실제 제공 라벨 | 예측 | 절대백분율오차(%) |
+| --- | --- | --- | --- | --- |
+| B2c6 | 3.6C(9%)-5C | 393.000 | 693.005 | 76.337 |
+| B2c19 | 6C(60%)-3C | 392.000 | 689.175 | 75.810 |
+| B2c15 | 3.6C(9%)-5C | 396.000 | 689.239 | 74.050 |
+| B2c30 | 5.6C(26%)-4.5C | 412.000 | 710.546 | 72.463 |
+| B2c21 | 6C(60%)-3C | 408.000 | 693.005 | 69.854 |
+
+큰 오차 셀의 정책·측정 구조·라벨 구간과 평균 잔차를 [정책별 오류](day2/output/errors_by_policy.csv), [구조별 오류](day2/output/errors_by_new_structure.csv), [미관측 정책별 오류](day2/output/errors_by_unseen_policy.csv)에서 확인합니다. 라벨 정의·분포 이동·미관측 정책은 가능한 원인 가설이며 단독 원인으로 확정하지 않습니다. 개선 방향은 일관된 실제 EOL 라벨 확보, 더 다양한 학습 정책·짧은 수명 셀 수집, 별도 배치 재검증입니다. 이 분석 후 Batch 2에 맞춰 재튜닝하지 않았습니다.
+
+**구체적인 오류 패턴:** 상위 5개 셀은 모두 500사이클 미만 라벨·미관측 정책·`newstructure` 접미사 없음이라는 공통점이 있습니다. 학습 최소 라벨은 636인데 Batch 2의 30/39셀이 그보다 짧으며, Batch 2 예측 범위는 687.9~1088.3사이클로 짧은 셀의 수명을 과대예측했습니다. Random Forest의 leaf 평균과 로그 역변환은 학습 타깃 범위 밖으로 수명을 외삽하지 못하는 구조입니다. 따라서 학습에 없는 짧은 수명 구간과 모델의 외삽 한계가 맞물렸음을 확인할 수 있습니다.
+
+미관측 정책 셀의 MAPE는 45.490%, 학습에 등장한 정책 셀은 45.595%로 비슷합니다. 미관측 정책만으로 큰 오차를 설명하지 않습니다. `newstructure`가 없는 30셀은 MAPE 54.950%, 접미사가 있는 9셀은 14.016%입니다. 구조 그룹은 수명 분포도 다르므로 이 차이를 구조 변경의 인과효과로 해석하지 않습니다.
+
+![제공 라벨 대비 잔차](day2/output/image/residuals.png)
+
+![고정 hold-out의 permutation 중요도](day2/output/image/valid_importance.png)
+
+중요도는 최종 모델 확정 후 Valid 10셀에서 20회 순열로 산출한 설명용 진단입니다. 막대는 MAPE 증가, 오차막대는 반복 표준편차이며 음수도 가능합니다. 소표본·상관 피처 영향이 있어 인과적 기여도나 안정적인 순위로 단정하지 않습니다.
 
 ## ESS 도메인 해석
 
-초기 총 수명 추정은 교체 시점 계획, 운영 조건별 수명 위험 검토, 추가 점검 대상 선별의 참고 정보로 활용할 수 있는지 검토합니다. 아직 모델 성능·현장 효과를 검증하지 않았으므로 교체 비용 절감이나 실제 운영 개선을 달성했다고 주장하지 않습니다.
-
-현재 확인된 제약과 추가 검증 과제는 다음과 같습니다.
-
-- **소표본과 분포 이동:** 학습 배치와 검증·테스트 배치의 수명 분포 및 정책 구성이 다릅니다.
-- **데이터·라벨 정합성:** 로컬 Batch 2 구성은 원논문 예제와 차이가 있으며, 동일 물리 셀을 식별할 정보도 불확실합니다. 실험 기록과 라벨 정의를 추가 확인합니다.
-- **평가 독립성:** DAY 1에서 Batch 1 전체와 Batch 2를 탐색했습니다. 이후 성능 기반 선택은 Batch 1 CV에 제한합니다.
-- **현장 적용 범위:** 실험 셀과 실제 ESS 팩은 운영·열관리·사용 조건이 다를 수 있습니다. 현장 데이터, 다양한 조건의 외부 검증, 예측 불확실성 평가가 필요합니다.
-- **관측·검증 범위:** 초기 100사이클 확보가 필요하며 DAY 2 외부 평가는 Batch 2에 한정합니다. Batch 3 추가 검증은 수행하지 않습니다.
+- 활용 가능성: 초기 열화 신호를 점검·추가 실험 대상 선정과 교체 계획의 참고 정보로 검토할 수 있습니다. 제공 라벨의 차이와 외부 성능을 고려할 때 자동 교체 시점 결정에 바로 적용할 근거는 부족합니다.
+- 개발 한계: 소표본, 학습·검증·외부 배치의 분포 차이, Batch 1 종료+1 라벨, 물리 셀 중복 식별 불확실성이 있습니다. DAY 1에서 Batch 1 전체와 Batch 2를 탐색했다는 평가 독립성의 한계도 남습니다.
+- 실 배포에 필요한 검증: 동일한 명목 용량·EOL 기준과 미완주/검열 여부, 실제 셀 식별자·실험 로그를 확보하고, 실제 ESS의 온도·부하·팩 조건에서 외부 검증과 예측 불확실성 평가를 해야 합니다. 실제 EOL 라벨 확보 또는 검열을 반영한 수명 모델은 후속 연구 과제입니다.
+- 운영 범위: 초기 100사이클 관측이 필요하며 이번 외부 평가는 Batch 2에 한정합니다. 비용 절감·현장 운영 개선을 달성했다고 주장하지 않습니다.
 
 ## 참고문헌
 
-- [과제 요구사항](요구사항/요구사항%20문서.md), [추가 평가 기준](요구사항/추가적인_평가기준.md), [README 샘플](요구사항/sample.md)
-- [DAY 1 설계 지시서](day1/day1.md), [DAY 2 개발 지시서](day2/day2.md)
+- Severson et al. (2019). Data-driven prediction of battery cycle life before capacity degradation. *Nature Energy*, 4, 383–391.
+- [원논문 데이터 로딩 코드](https://github.com/rdbraatz/data-driven-prediction-of-battery-cycle-life-before-capacity-degradation/blob/master/LoadData.m): 0.88Ah 도달 여부에 따른 라벨 생성, 원논문 배치 구성·분할·이어진 측정 처리 확인
 - [과제 제공 데이터셋](https://www.kaggle.com/datasets/itshpark/data-driven-prediction-of-battery-cycle)
-- Severson et al. (2019). Data-driven prediction of battery cycle life before capacity degradation. *Nature Energy*, 4, 383–391. 제공 요구사항의 서지정보를 사용했습니다.
+- [과제 요구사항](요구사항/요구사항%20문서.md), [추가 평가 기준](요구사항/추가적인_평가기준.md), [README 샘플](요구사항/sample.md)
+- [DAY 1 분석](day1/day1.ipynb), [데이터 감사](day2/output/data_audit.json), [실행 검증](day2/output/verification.json)
 
 ## 팀 구성
 
-- 신현중 (울산 3반): DAY 1 EDA·모델 설계
-- DAY 2 예정 담당: 피처 엔지니어링, 모델 개발, 성능 평가(Batch 2), 결과 해석. 실제 수행 내용은 개발 완료 후 갱신합니다.
+- 신현중 (울산 3반): EDA, 피처 엔지니어링, 파이프라인·후보 모델 개발, 성능 평가(Batch 2), 오류·도메인 해석

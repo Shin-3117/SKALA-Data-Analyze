@@ -1,0 +1,16 @@
+feature,formula,observed_cycles,unit,EDA_basis,final_status,missing_rule,selection_basis
+delta_logvar,"log10(var(Q100-Q10, ddof=0)), 2.1..3.4V, 500 points","10,100",log10(Ah^2),B1 r=-0.887; primary signal,selected,nonpositive variance/nonfinite -> NaN,B1 training-policy CV; see feature_ablation.csv
+QD_slope_10_100,"polyfit(cycle,QD,1)[0]",10..100,Ah/cycle,B1 r=0.524; initial slope,selected,"QD<=0,nonfinite,>1.3*qref -> NaN",B1 training-policy CV; see feature_ablation.csv
+mean_chargetime,mean(positive chargetime),2..100,dataset units,B1 r=0.577; charging process,selected,nonpositive -> NaN,B1 training-policy CV; see feature_ablation.csv
+mean_Tavg,mean(Tavg),2..100,deg C,B1 r=-0.482; representative temperature,selected,median imputation in fold,B1 training-policy CV; see feature_ablation.csv
+C1,first C-rate parsed from policy,before cycling,C,B1 r=-0.580; policy numeric representation,not in winning feature set,parse errors -> NaN,B1 training-policy CV; see feature_ablation.csv
+switch_SOC,transition SOC parsed from policy,before cycling,%,policy numeric representation,not in winning feature set,parse errors -> NaN,B1 training-policy CV; see feature_ablation.csv
+C2,second C-rate parsed from policy,before cycling,C,policy numeric representation,not in winning feature set,parse errors -> NaN,B1 training-policy CV; see feature_ablation.csv
+std_QD,"sample std(QD), ddof=1",2..100,Ah,variability; optional group ablation,not in winning feature set,same QD quality rule,B1 training-policy CV; see feature_ablation.csv
+mean_IR,mean(IR where IR>0),2..100,Ohm per dataset,optional; zero is treated as missing,not in winning feature set,IR<=0 -> NaN,B1 training-policy CV; see feature_ablation.csv
+IR_change,"median(IR91:100)-median(IR2:10), IR>0",2..100,Ohm per dataset,optional change signal,not in winning feature set,IR<=0 -> NaN,B1 training-policy CV; see feature_ablation.csv
+delta_min,min(Q100-Q10),"10,100",Ah,redundancy/offset ablation,not in winning feature set,nonfinite -> NaN,B1 training-policy CV; see feature_ablation.csv
+delta_mean,mean(Q100-Q10),"10,100",Ah,redundancy/offset ablation,not in winning feature set,nonfinite -> NaN,B1 training-policy CV; see feature_ablation.csv
+delta_range,ptp(Q100-Q10),"10,100",Ah,redundancy ablation,not in winning feature set,nonfinite -> NaN,B1 training-policy CV; see feature_ablation.csv
+mean_Tmax,mean(Tmax),2..100,deg C,temperature redundancy ablation,not in winning feature set,median imputation in fold,B1 training-policy CV; see feature_ablation.csv
+policy,original policy string with suffix preserved,before cycling,category,one-hot/CatBoost vs numeric decomposition,not in winning feature set,unknown: one-hot ignore or CatBoost hash,B1 training-policy CV; see feature_ablation.csv

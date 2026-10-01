@@ -39,6 +39,9 @@ def save_run_config(root, selected, figures):
               "final_fit_population": "36 B1 training cells; hold-out excluded",
               "target": "provided cycle_life (positive), no target imputation",
               "cv": "GroupKFold(5), groups=original policy, hold-out from DAY 1 seed 42 plan",
+              "fixed_model_parameters": {"RandomForest_ExtraTrees": {"n_estimators": 200, "random_state": 42, "n_jobs": 1},
+                                         "CatBoost": {"iterations": 200, "learning_rate": 0.03, "random_seed": 42, "thread_count": 1},
+                                         "ElasticNet": {"max_iter": 30000, "tol": 1e-6, "random_state": 42}},
               "cv_optimism": "reported winning CV was also used for candidate selection; not nested CV",
               "physical_identity_status": "unresolved: no trusted physical identifier or experiment log",
               "source_sha256": {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()

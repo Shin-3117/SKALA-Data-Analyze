@@ -91,8 +91,8 @@ def make_figures(root, features, cells, train, comparison, predictions):
                xlabel="Mean provided cycle_life (cycles)", title=f"{batch}: policy means; bars +/- SD")
         ax.tick_params(axis="y", labelsize=8)
     save(fig, "eda_policy.png")
-    corr = train[NUMERIC_FEATURES[:10]].corr()
-    fig, ax = plt.subplots(figsize=(9, 7), layout="constrained")
+    corr = train[NUMERIC_FEATURES].corr()
+    fig, ax = plt.subplots(figsize=(11, 9), layout="constrained")
     im = ax.imshow(corr, cmap="coolwarm", vmin=-1, vmax=1)
     ax.set(xticks=range(len(corr)), yticks=range(len(corr)), xticklabels=corr.columns,
            yticklabels=corr.index, title=f"B1 training portion: n={len(train)} (before pruning)")
@@ -200,6 +200,11 @@ def write_readme(root, features, quality, train, valid, test, spec, comparison, 
     ridge_abl = ablations.query("family == 'Ridge'")[["feature_set","corr_threshold","log_target","CV_MAPE_pct","CV_std_pct"]].sort_values("CV_MAPE_pct")
     ridge_abl = ridge_abl.rename(columns={"feature_set":"Ridge 피처군", "corr_threshold":"공선성 기준", "log_target":"로그 타깃", "CV_MAPE_pct":"CV MAPE(%)","CV_std_pct":"표준편차(%p)"})
     mean_bias = predictions.query("split == 'Test'").residual.mean()
+    test_predictions = predictions.query("split == 'Test'")
+    below_train = int((test.cycle_life < train.cycle_life.min()).sum())
+    group_diagnostics = pd.read_csv(out/"errors_by_unseen_policy.csv").query("split == 'Test'").set_index("unseen_policy")
+    structure_diagnostics = pd.read_csv(out/"errors_by_new_structure.csv").query("split == 'Test'").set_index("new_structure")
+    condition = json.loads((out/"collinearity_diagnostics.json").read_text())["numeric_condition_number"]
     bias_text = "과대예측" if mean_bias > 0 else "과소예측"
     target_text = "목표보다 오차가 낮습니다" if test_score <= 9.1 else "목표에 미달합니다"
     outcome = f"Batch 1 그룹 CV {train_score:.3f}%, hold-out {valid_score:.3f}%, Batch 2 {test_score:.3f}%입니다. 과제 비교 목표 9.1%에 대해 {target_text}."
@@ -309,13 +314,14 @@ QD는 비유한·0 이하·초기 2~10사이클 양수 중앙값의 1.3배 초�
 
 {md_table(ridge_abl)}
 
-위 비교는 각 피처군 내에서 CV로 고른 최선 설정이며 통제된 단일 파라미터 효과의 인과실험은 아닙니다. 전체 후보는 [model_comparison.csv](day2/output/model_comparison.csv), 피처 정의·채택/제외 근거는 [feature_design.csv](day2/output/feature_design.csv), 최종 축소 결과는 [final_feature_selection.csv](day2/output/final_feature_selection.csv)에 기록했습니다.
+위 비교는 각 피처군 내에서 CV로 고른 최선 설정이며 통제된 단일 파라미터 효과의 인과실험은 아닙니다. 중복 피처를 남긴 Ridge의 CV가 더 낮은 경우도 있어 제거만으로 성능이 항상 개선된다고 결론 내리지 않습니다. 최종 모델의 4개 수치 피처는 상관 기준으로 제거되지 않았고, 학습 부분에서 대치 후 표준화한 행렬의 조건수는 {condition:.3f}입니다. 전체 후보는 [model_comparison.csv](day2/output/model_comparison.csv), 피처 정의·채택/제외 근거는 [feature_design.csv](day2/output/feature_design.csv), 최종 축소 결과는 [final_feature_selection.csv](day2/output/final_feature_selection.csv)에 기록했습니다.
 
 ### 모델 선택 및 근거
 
 - 후보 모델: 중앙값 기준, Ridge/Elastic Net, Random Forest/Extra Trees, CatBoost
 - 최종 모델: **{spec['family']}**, 후보 `{spec['candidate_id']}`
 - 최종 설정: `{json.dumps(spec['params'], sort_keys=True)}`, 로그 타깃 `{spec['log_target']}`, 공선성 기준 `{spec['corr_threshold']}`
+- 고정 설정: Random Forest/Extra Trees는 200개 트리와 random_state=42를 사용했습니다. 얕은 깊이·최소 leaf 표본 수로 소표본 과적합을 제한하고 로그 타깃의 효과는 원래 단위 MAPE로 비교했습니다.
 - 선택 이유: 사전 정의한 {len(comparison)}개 설정 중 **Batch 1 그룹 CV 평균 MAPE가 가장 낮았습니다**. 기준 모델 {baseline:.3f}% 대비 {baseline-train_score:.3f}%p 개선했고 fold 표준편차는 {best.CV_std_pct:.3f}%p입니다. Valid·Batch 2 결과로 모델을 바꾸지 않았습니다.
 
 {md_table(family_table)}
@@ -355,6 +361,10 @@ Batch 2 평균 예측−라벨은 {mean_bias:.3f}사이클로 {bias_text} 방향
 {md_table(top_table)}
 
 큰 오차 셀의 정책·측정 구조·라벨 구간과 평균 잔차를 [정책별 오류](day2/output/errors_by_policy.csv), [구조별 오류](day2/output/errors_by_new_structure.csv), [미관측 정책별 오류](day2/output/errors_by_unseen_policy.csv)에서 확인합니다. 라벨 정의·분포 이동·미관측 정책은 가능한 원인 가설이며 단독 원인으로 확정하지 않습니다. 개선 방향은 일관된 실제 EOL 라벨 확보, 더 다양한 학습 정책·짧은 수명 셀 수집, 별도 배치 재검증입니다. 이 분석 후 Batch 2에 맞춰 재튜닝하지 않았습니다.
+
+**구체적인 오류 패턴:** 상위 5개 셀은 모두 500사이클 미만 라벨·미관측 정책·`newstructure` 접미사 없음이라는 공통점이 있습니다. 학습 최소 라벨은 {train.cycle_life.min():.0f}인데 Batch 2의 {below_train}/{len(test)}셀이 그보다 짧으며, Batch 2 예측 범위는 {test_predictions.prediction.min():.1f}~{test_predictions.prediction.max():.1f}사이클로 짧은 셀의 수명을 과대예측했습니다. Random Forest의 leaf 평균과 로그 역변환은 학습 타깃 범위 밖으로 수명을 외삽하지 못하는 구조입니다. 따라서 학습에 없는 짧은 수명 구간과 모델의 외삽 한계가 맞물렸음을 확인할 수 있습니다.
+
+미관측 정책 셀의 MAPE는 {group_diagnostics.loc[True,'MAPE_pct']:.3f}%, 학습에 등장한 정책 셀은 {group_diagnostics.loc[False,'MAPE_pct']:.3f}%로 비슷합니다. 미관측 정책만으로 큰 오차를 설명하지 않습니다. `newstructure`가 없는 {int(structure_diagnostics.loc[False,'cells'])}셀은 MAPE {structure_diagnostics.loc[False,'MAPE_pct']:.3f}%, 접미사가 있는 {int(structure_diagnostics.loc[True,'cells'])}셀은 {structure_diagnostics.loc[True,'MAPE_pct']:.3f}%입니다. 구조 그룹은 수명 분포도 다르므로 이 차이를 구조 변경의 인과효과로 해석하지 않습니다.
 
 ![제공 라벨 대비 잔차](day2/output/image/residuals.png)
 
