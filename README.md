@@ -258,10 +258,8 @@ Batch 2 평균 예측−라벨은 201.783사이클로 과대예측 방향입니�
 ## 참고문헌
 
 - Severson et al. (2019). Data-driven prediction of battery cycle life before capacity degradation. *Nature Energy*, 4, 383–391.
-- [원논문 데이터 로딩 코드](https://github.com/rdbraatz/data-driven-prediction-of-battery-cycle-life-before-capacity-degradation/blob/master/LoadData.m): 0.88Ah 도달 여부에 따른 라벨 생성, 원논문 배치 구성·분할·이어진 측정 처리 확인
 - [과제 제공 데이터셋](https://www.kaggle.com/datasets/itshpark/data-driven-prediction-of-battery-cycle)
-- [과제 요구사항](요구사항/요구사항%20문서.md), [추가 평가 기준](요구사항/추가적인_평가기준.md), [README 샘플](요구사항/sample.md)
-- [DAY 1 분석](day1/day1.ipynb), [데이터 감사](day2/output/data_audit.json), [실행 검증](day2/output/verification.json)
+- [실습 가이드](https://actually-war-1ea.notion.site/DS-Mini-Project-32d7f4c8669380338a27f90c471c1fcb)
 
 ## 팀 구성
 
