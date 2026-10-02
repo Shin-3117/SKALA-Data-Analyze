@@ -187,7 +187,19 @@ def write_readme(root, features, quality, train, valid, test, spec, comparison, 
     selected_table = effective[["feature", "formula", "observed_cycles", "unit", "EDA_basis"]].rename(
         columns={"feature":"최종 피처", "formula":"계산식", "observed_cycles":"관측 사이클", "unit":"단위", "EDA_basis":"선정 근거"})
     full_features = FEATURE_SETS[spec["feature_set"]]
-    perf_table = performance.rename(columns={"값":"MAPE / Gap", "비고":"계산·평가 기준"})
+    perf_table = performance[["구분", "값"]].rename(columns={"값": "MAPE (%)"}).copy()
+    perf_table["MAPE (%)"] = [
+        f"{value:+.3f}" if label.startswith("Gap (") else f"{value:.3f}"
+        for label, value in zip(perf_table["구분"], perf_table["MAPE (%)"])
+    ]
+    perf_table["비고"] = perf_table["구분"].map({
+        "Train (Batch 1 CV)": f"5-fold 그룹 CV 평균; {len(train)}셀·{train.policy.nunique()}정책",
+        "Valid (Batch 1 Hold-out)": f"{len(valid)}셀·{valid.policy.nunique()}정책",
+        "Test (Batch 2)": f"{len(test)}셀; Batch 1 CV로 선택한 최종 모델 평가",
+        "Gap (Train-Valid)": "(+) : 과적합 의심",
+        "Gap (Valid-Test)": "(+) : 배치간 일반화 저하 의심",
+        "Gap (Target-Test)": "Target : 원논문 9.1%",
+    })
     auxiliary = metrics.rename(columns={"split":"구분", "cells":"셀 수", "MAPE_pct":"Pooled MAPE(%)",
                                         "MAE_cycles":"MAE(사이클)", "RMSE_cycles":"RMSE(사이클)"})
     errors = pd.read_csv(out/"errors_by_life_group.csv").query("split == 'Test'")
@@ -340,7 +352,7 @@ QD는 비유한·0 이하·초기 2~10사이클 양수 중앙값의 1.3배 초�
 
 {md_table(perf_table)}
 
-{outcome} Gap은 퍼센트포인트(%p)이며 양수는 오차 증가·목표 미달입니다. Train–Valid 차이는 과적합뿐 아니라 hold-out의 수명·정책 이동도 반영합니다. Valid 라벨 범위는 {valid.cycle_life.min():.0f}~{valid.cycle_life.max():.0f}, 학습은 {train.cycle_life.min():.0f}~{train.cycle_life.max():.0f}입니다.
+{outcome} 표의 Gap은 퍼센트포인트(%p)이며 각각 Valid−Train, Test−Valid, Test−Target으로 계산합니다. 양수는 오차 증가·목표 미달입니다. Train–Valid 차이는 과적합뿐 아니라 hold-out의 수명·정책 이동도 반영합니다. Valid 라벨 범위는 {valid.cycle_life.min():.0f}~{valid.cycle_life.max():.0f}, 학습은 {train.cycle_life.min():.0f}~{train.cycle_life.max():.0f}입니다.
 
 {md_table(auxiliary)}
 

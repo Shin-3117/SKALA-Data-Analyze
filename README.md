@@ -149,16 +149,16 @@ QD는 비유한·0 이하·초기 2~10사이클 양수 중앙값의 1.3배 초�
 
 `MAPE(%) = 100 × mean(|y−ŷ|/|y|)`이며 타깃은 제공 `cycle_life`입니다.
 
-| 구분 | MAPE / Gap | 단위 | 계산·평가 기준 |
-| --- | --- | --- | --- |
-| Train (Batch 1 CV) | 8.547 | % | 5-fold mean; SD=3.212427; 36 cells/18 groups |
-| Valid (Batch 1 Hold-out) | 15.584 | % | 10 cells/5 groups |
-| Test (Batch 2) | 45.504 | % | 39 cells; final model frozen by B1 CV |
-| Gap (Train-Valid) | 7.037 | %p | Valid minus Train CV |
-| Gap (Valid-Test) | 29.920 | %p | Test minus Valid |
-| Gap (Target-Test) | 36.404 | %p | Test minus assignment target 9.1 |
+| 구분 | MAPE (%) | 비고 |
+| --- | --- | --- |
+| Train (Batch 1 CV) | 8.547 | 5-fold 그룹 CV 평균; 36셀·18정책 |
+| Valid (Batch 1 Hold-out) | 15.584 | 10셀·5정책 |
+| Test (Batch 2) | 45.504 | 39셀; Batch 1 CV로 선택한 최종 모델 평가 |
+| Gap (Train-Valid) | +7.037 | (+) : 과적합 의심 |
+| Gap (Valid-Test) | +29.920 | (+) : 배치간 일반화 저하 의심 |
+| Gap (Target-Test) | +36.404 | Target : 원논문 9.1% |
 
-Batch 1 그룹 CV 8.547%, hold-out 15.584%, Batch 2 45.504%입니다. 과제 비교 목표 9.1%에 대해 목표에 미달합니다. Gap은 퍼센트포인트(%p)이며 양수는 오차 증가·목표 미달입니다. Train–Valid 차이는 과적합뿐 아니라 hold-out의 수명·정책 이동도 반영합니다. Valid 라벨 범위는 534~757, 학습은 636~1227입니다.
+Batch 1 그룹 CV 8.547%, hold-out 15.584%, Batch 2 45.504%입니다. 과제 비교 목표 9.1%에 대해 목표에 미달합니다. 표의 Gap은 퍼센트포인트(%p)이며 각각 Valid−Train, Test−Valid, Test−Target으로 계산합니다. 양수는 오차 증가·목표 미달입니다. Train–Valid 차이는 과적합뿐 아니라 hold-out의 수명·정책 이동도 반영합니다. Valid 라벨 범위는 534~757, 학습은 636~1227입니다.
 
 | 구분 | 셀 수 | Pooled MAPE(%) | MAE(사이클) | RMSE(사이클) | R2 |
 | --- | --- | --- | --- | --- | --- |
