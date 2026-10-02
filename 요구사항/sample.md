@@ -73,7 +73,28 @@ EDA 결과를 바탕으로 선택한 피처와 그 근거를 기술
 
 ## 성능 결과
 Format에 맞춰 작성
-
+- Format :
+    - Reporting format (for Regression)
+        
+        
+        | 구분 | MAPE (%) | 비고 |
+        | --- | --- | --- |
+        | Train (Batch 1 CV) |  |  |
+        | Valid (Batch 1 Hold-out) |  |  |
+        | Test (Batch 2)  |  |  |
+        | Gap (Train-Valid)  |  | (+) : 과적합 의심 |
+        | Gap (Valid-Test) |  | (+) : 배치간 일반화 저하 의심 |
+        | Gap (Target-Test) |  | Target : 원논문 9.1%  |
+        
+    - Reporting format (for Classification)
+        | 구분 | F1-Score | Accuracy | 비고 |
+        | --- | --- | --- | --- |
+        | Train (Batch 1 CV) |  |  |  |
+        | Valid (Batch 1 Hold-out) |  |  |  |
+        | Test (Batch 2)  |  |  |  |
+        | Gap (Train-Valid)  |  |  | (+) : 과적합 의심 |
+        | Gap (Valid-Test) |  |  | (+) : 배치간 일반화 저하 의심 |
+        | Gap (Target-Test) |  |  | Target : Accuracy 95.1%  |
 
 ## 오류 분석
 - 모델이 가장 크게 틀린 셀의 공통점

@@ -70,27 +70,71 @@ python3.12 -m venv .venv
 
 ## EDA
 
-- **Cycle Life 분포:** 제공 라벨 중앙값은 Batch 1 858.5사이클(n=46), Batch 2 472.0사이클(n=39)입니다. Batch 1의 550 미만 표본은 1셀로 분류 검증이 불안정해 회귀를 선택했습니다. Batch 2의 짧은 라벨 분포와 서로 다른 라벨 생성 방식을 구분해 해석합니다.
+- **Cycle Life 분포 — 확인한 결과:** Batch 2는 <500사이클 라벨 셀이 대부분이고 Batch 1에는 해당 구간이 없습니다. 학습 배치에서 보지 못한 짧은 수명 구간이 테스트에 많아 일반화가 어려운 조건입니다. 아래 표의 장·단수명 구간은 EDA용이며, 이진 분류 기준인 550사이클과 구분합니다.
+
+| 배치 | 셀 수 | 라벨 중앙값(사이클) | 단수명 <500 | 장수명 >1000 |
+| --- | --- | --- | --- | --- |
+| B1 | 46 | 858.5 | 0/46 (0.0%) | 10/46 (21.7%) |
+| B2 | 39 | 472.0 | 28/39 (71.8%) | 3/39 (7.7%) |
+
+**모델 설계 시사점:** Batch 1의 550 미만 표본은 1/46셀로 이진 분류 검증이 불안정해 회귀를 선택했습니다. 수명 구간별 오차도 따로 확인합니다. 배치별 분포 차이에는 서로 다른 라벨 생성 방식의 영향도 있어 실제 열화 차이만으로 해석하지 않습니다.
 
 ![Batch 1·2 제공 수명 라벨 분포](day2/output/image/eda_cycle_life.png)
 
-- **열화 곡선 분석:** 배치별 최소·최대 제공 라벨의 대표 셀을 비교했습니다. 회색 영역만 입력 관측 기간입니다. 0.88Ah 선은 원논문 로더의 절대 용량 참조 기준이며 각 셀 초기 용량의 80%와 동일하다고 표시하지 않습니다. 전체 기록의 knee·종료 용량·기록 길이는 모델 입력에서 제외했습니다.
+- **열화 곡선 — 확인한 결과:** 배치별 최소·최대 제공 라벨 셀을 비교하면, 초기 용량 수준이 비슷해도 후기 용량 감소 속도와 기록 종료 시점이 다릅니다. Batch 2의 짧은 라벨 셀 B2c19는 긴 라벨 셀 B2c34보다 이른 구간에 급격한 감소를 보입니다. 대표 셀 비교이므로 배치 전체의 열화 속도를 대표하는 통계는 아닙니다.
+
+DAY 1의 [knee 탐색 결과](day1/output/knee_candidates.csv)는 B1 45/46셀, 후보 위치 중앙값 607사이클 / B2 39/39셀, 후보 위치 중앙값 356사이클입니다. 11점 이동 중앙값으로 완화한 뒤 연속 2구간 직선을 적합해, 단일 직선 대비 SSE가 25% 이상 줄고 후기 기울기가 음수이며 절댓값이 초기의 1.5배 이상일 때 후보로 표시했습니다. 탐색 기준에 따른 후보이며 물리적인 열화 시작점을 확정한 값은 아닙니다.
+
+**모델 설계 시사점:** 초기 열화 속도를 요약하는 `QD_slope_10_100`을 후보로 사용했습니다. 전체 기록의 knee·종료 용량·기록 길이는 미래 정보이므로 모델 입력에서 제외했습니다. 아래 회색 영역만 입력 관측 기간이며, 0.88Ah 선은 절대 용량 참조 기준으로 각 셀 초기 용량의 80%와 동일하지 않습니다.
 
 ![배치별 대표 셀의 방전 용량과 입력 관측 기간](day2/output/image/eda_degradation.png)
 
-- **ΔQ(V) 곡선 분석:** `Q100−Q10`을 확인된 Vdlin 축(3.5→2.0V)에서 공통 2.1~3.4V·500점으로 보간했습니다. 띠는 그룹의 IQR입니다. Batch 1에는 <500 라벨 셀이 없어 해당 그룹 곡선이 없습니다. Batch 1 ΔQ 로그 분산–라벨 Pearson r=-0.887이며, 이를 후보 선정 근거로 삼았습니다.
+- **ΔQ(V) — 확인한 결과:** 장수명 그룹보다 중·단수명 그룹에서 `Q100−Q10`의 음의 변화 폭이 크게 나타납니다. Batch 1에는 <500 라벨 셀이 없어 단수명 곡선이 없습니다. Batch 1의 ΔQ 로그 분산과 제공 라벨은 Pearson r=-0.887로 강한 음의 선형 관계를 보였습니다.
+
+**모델 설계 시사점:** 초기 곡선의 변화량을 `delta_logvar`로 요약해 핵심 후보로 채택했습니다. 확인된 Vdlin 축(3.5→2.0V)에서 공통 2.1~3.4V·500점으로 보간하고 `log10(var(ΔQ, ddof=0))`를 계산했습니다. 곡선의 띠는 그룹 IQR이며, 상관관계만으로 외부 배치 예측력을 보장하지 않습니다.
 
 ![수명 그룹별 초기 ΔQ 곡선](day2/output/image/eda_delta_q.png)
 
 ![초기 ΔQ 로그 분산과 제공 라벨의 관계](day2/output/image/eda_delta_life.png)
 
-- **충전 속도(C-rate)와 수명의 관계:** 정책별 평균 라벨·표본 수를 함께 확인했습니다. 오차막대는 표준편차이며 1셀 정책의 막대는 변동성 추정이 아닙니다. 충전 조건과 다른 실험 조건이 함께 달라지므로 정책 차이를 인과효과로 단정하지 않습니다. 수치 분해와 정책 범주형 처리 후보를 CV로 비교했습니다.
+- **충전 조건 — 확인한 결과:** Batch 1에서 정책 평균 라벨은 `4C(80%)-4C` 1226.5사이클(n=2)부터 `5.4C(80%)-5.4C` 546.5사이클(n=2)까지 차이가 있습니다. 1단계 C-rate와 라벨은 r=-0.580, 초기 평균 충전시간과 라벨은 r=0.577입니다. 정책별 표본 수가 작고 전환 SOC·2단계 속도·다른 실험 조건도 달라, 빠른 충전의 인과효과로 단정하지 않습니다.
+
+**모델 설계 시사점:** 충전시간을 후보로 사용하고, 정책의 C1·전환 SOC·C2 수치 분해와 범주형 처리 대안을 CV로 비교했습니다. 오차막대는 표준편차이며 1셀 정책은 변동성을 추정할 수 없습니다.
 
 ![배치별 충전 정책의 제공 수명 라벨 평균과 표본 수](day2/output/image/eda_policy.png)
 
-- **추가 확인 — 다중공선성:** 아래 행렬은 Batch 1 학습 부분 36셀의 초기 피처 상관입니다. 각 CV fold 안에서 대표 피처 우선순위에 따라 공선성을 축소하고, Ridge 중복 피처군의 축소 유무도 비교했습니다. 결측 대치·선택·스케일링은 해당 학습 fold에만 fit했습니다.
+- **초기 신호·다중공선성 — 확인한 결과:** Batch 1에서 QD 기울기–라벨 r=0.524, 평균 온도–라벨 r=-0.482입니다. 별도로 학습 부분 36셀의 피처 간 상관을 확인하면 ΔQ 최소–평균 r=0.990, 평균–최고 온도 r=0.953로 중복 정보가 큽니다. 피처–타깃 관계와 피처끼리의 중복을 구분했습니다.
+
+**모델 설계 시사점:** ΔQ 로그 분산·평균 온도를 대표 후보로 두고, 각 CV 학습 fold 안에서 상수·고상관 피처를 축소했습니다. Ridge의 중복 피처군 유지·제거 결과도 비교했으며, 결측 대치·선택·스케일링은 해당 학습 fold에만 fit했습니다.
 
 ![학습 부분 초기 피처의 상관관계](day2/output/image/feature_correlation.png)
+
+### 분석 코드 빠른 참조 — Scratch 기준
+
+[30-ESSHealth-scratch.ipynb](30-ESSHealth-scratch.ipynb)의 실제 코드 위치와 재사용할 패턴입니다. 셀 번호는 **Markdown을 포함해 위에서부터 1번**으로 센 위치입니다. 위 결과 수치는 DAY 1·2의 정제·배치 비교 결과이며, 아래 표는 원본 Scratch의 코드 참고용입니다.
+
+| 할 일 | 라이브러리·핵심 코드 | Scratch 위치 |
+| --- | --- | --- |
+| MATLAB 파일 읽기 | `mat73.loadmat(path)` → 실패 시 `scipy.io.loadmat(path, simplify_cells=True)` | Loading · 셀 3, 6 · `load_mat()` |
+| 중첩 구조를 표로 변환 | `numpy.array()`, `pandas.DataFrame(records)`; dict-of-lists → list-of-dicts | 데이터 구조·Summary · 셀 8, 10, 12 · `to_list_of_dicts()`, `extract_summary()` |
+| 기초 통계·결측·개수 확인 | `df.describe()`, `df.isnull().sum()`, `Series.nunique()` | 셀 14~16 |
+| 셀별 수명 분포 | `df.drop_duplicates('cell_id')`, Matplotlib `Axes.hist()`, `Axes.boxplot()` | EDA 1 · 셀 18 |
+| 셀별 열화 곡선 | 셀별 필터링 후 Matplotlib `Axes.plot(cycle, QD)`, `Axes.axhline()` | EDA 2 · 셀 21, 23 |
+| 초기 IR과 수명 비교 | `df[df['cycle'] <= 10].groupby('cell_id')['IR'].mean()`, `merge()`, `Series.corr()`, `Axes.scatter()` | EDA 3 · 셀 26 |
+| 정책별 평균·편차·표본 수 | `groupby('charging_policy')['cycle_life'].agg(['mean', 'std', 'count'])`, `sort_values()`, `Axes.bar(yerr=...)` | EDA 4 · 셀 29 |
+| 초기 피처 집계·상관행렬 | 초기 100사이클 필터 → `groupby('cell_id').agg(...)` → `DataFrame.corr()` → `Axes.imshow()` | EDA 5 · 셀 33 |
+
+**재사용 메모:** 사이클마다 반복된 수명 라벨은 셀당 한 행으로 줄인 뒤 분포·정책 평균을 계산합니다. 초기 피처는 먼저 관측 사이클을 제한한 뒤 집계합니다. Scratch의 로더는 코드상 `mat73`을 먼저 시도합니다. 셀 색상은 셀 순서로 부여되므로 장·단수명 색상으로 해석하지 않습니다. Scratch의 QD 하한 필터는 실제 말기 열화 구간도 제거할 수 있어 현재 분석에서는 그대로 사용하지 않았고, `0.88 * nominal`도 80% 기준으로 재사용하지 않습니다.
+
+### Scratch 이후 추가한 분석
+
+| 분석 | 라이브러리·핵심 코드 | 구현 위치 |
+| --- | --- | --- |
+| ΔQ 곡선·로그 분산·초기 기울기 | NumPy `interp()`, `var(ddof=0)`, `log10()`, `polyfit()`; 그룹 곡선은 `nanmedian()`, `nanquantile()` | [features.py](day2/src/features.py) · `load_features()`, `slope()` / [reporting.py](day2/src/reporting.py) · `make_figures()` |
+| knee 후보 탐색 | pandas `rolling().median()`, NumPy `linalg.lstsq()`; 단일·2구간 직선 SSE 비교 | [DAY 1 노트북](day1/day1.ipynb) · 「2. 방전 용량 열화와 knee 탐색」의 `knee_candidate()` |
+| 대용량 .mat 선택 로딩·공선성 축소 | `h5py.File()` / NumPy `corrcoef()`와 scikit-learn `Pipeline`, `SimpleImputer`, `StandardScaler` | [features.py](day2/src/features.py) · `read_array()`, `load_features()` / [modeling.py](day2/src/modeling.py) · `CorrelationPruner`, `build_model()` |
+
+Scratch의 ΔQ 부분은 `cycles[n]['Qdlin']` 사용 힌트만 있으며 실제 계산·보간 코드는 DAY 1·2에서 추가했습니다. `mat73`은 Scratch의 로더용이고, 현재 DAY 2는 `h5py`로 필요한 필드를 읽습니다. 패키지 버전은 [requirements.txt](requirements.txt)를 참고합니다.
 
 ## Modeling
 
